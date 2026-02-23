@@ -9,7 +9,7 @@ The AI engine of the system. A high-performance Python service that performs hea
 - **Sentiment Analysis**: Emotion classification (Happy, Neutral, Sad, etc.) and demographic estimation (Age, Gender).
 
 ## 🛠 Tech Stack
-- **Framework**: FastAPI
+- **Framework**: FastAPI (Requires Python 3.10+)
 - **Engines**: InsightFace, OpenCV
 - **Inference**: ONNX Runtime (CPU/GPU) / TensorFlow Lite
 - **Models**: Buffalo_L, MediaPipe Face Landmarker.

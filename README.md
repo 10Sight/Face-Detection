@@ -14,7 +14,7 @@ The project is divided into three core microservices:
 
 ### Prerequisites
 - Node.js (v18+)
-- Python (v3.9+)
+- Python (v3.10+)
 - MongoDB Atlas or Local Instance
 - Docker & Docker Compose (optional)
 
