@@ -1,0 +1,22 @@
+# Python Dependencies
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Variables
+.env
+
+# Logs
+*.log
+worker_critical.log
+worker_debug.log
+
+# Models & Large Files
+detector.tflite
+detector_full.tflite
+face_landmarker.task
+models/
+
+# OS Files
+.DS_Store

@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  worker:
+    build: ./worker
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - face-ai-network
+
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/face-detection
+      - WORKER_URL=http://worker:8000
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - worker
+    networks:
+      - face-ai-network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - face-ai-network
+
+networks:
+  face-ai-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
