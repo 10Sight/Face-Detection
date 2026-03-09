@@ -11,6 +11,8 @@ const faceSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
         },
+        dateOfBirth: String,
+        gender: String,
         embedding: {
             type: [Number],
             required: true,

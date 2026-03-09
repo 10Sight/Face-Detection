@@ -1,5 +1,6 @@
 import { Face } from "../models/face.model.js";
 import { Watchlist } from "../models/watchlist.model.js";
+import { removeFromLocalIndex, updateLocalIndex } from "./recognition.service.js";
 
 /**
  * Retrieves all registered identities enriched with watchlist status.
@@ -23,11 +24,13 @@ export const fetchAllIdentities = async () => {
 /**
  * Updates an identity's metadata and its watchlist entry.
  */
-export const updateIdentityRecord = async (id, { name, watchlist }) => {
+export const updateIdentityRecord = async (id, { name, dateOfBirth, gender, watchlist }) => {
     const identity = await Face.findById(id);
     if (!identity) throw new Error("Identity not found");
 
     if (name) identity.name = name;
+    if (dateOfBirth !== undefined) identity.dateOfBirth = dateOfBirth;
+    if (gender !== undefined) identity.gender = gender;
     await identity.save();
 
     if (watchlist) {
@@ -42,15 +45,21 @@ export const updateIdentityRecord = async (id, { name, watchlist }) => {
             { upsert: true, new: true }
         );
     }
+
+    // Sync with recognition index
+    updateLocalIndex(id, { name: identity.name, dateOfBirth: identity.dateOfBirth, gender: identity.gender });
+
     return identity;
 };
 
 /**
  * Registers a new identity with face embedding and watchlist data.
  */
-export const registerNewIdentity = async ({ name, embedding, watchlist, userId }) => {
+export const registerNewIdentity = async ({ name, dateOfBirth, gender, embedding, watchlist, userId }) => {
     const face = await Face.create({
         name,
+        dateOfBirth,
+        gender,
         embedding,
         userId: userId || null
     });
@@ -65,8 +74,19 @@ export const registerNewIdentity = async ({ name, embedding, watchlist, userId }
         });
     }
 
+    // Sync with recognition index proactively
+    updateLocalIndex(face._id, {
+        name,
+        userId: userId || null,
+        dateOfBirth,
+        gender,
+        embedding
+    });
+
     return face;
 };
+
+
 
 /**
  * Purges an identity and its security metadata.
@@ -74,5 +94,9 @@ export const registerNewIdentity = async ({ name, embedding, watchlist, userId }
 export const purgeIdentityRecord = async (id) => {
     await Face.findByIdAndDelete(id);
     await Watchlist.findOneAndDelete({ faceId: id });
+
+    // Sync with recognition index
+    removeFromLocalIndex(id);
+
     return true;
 };

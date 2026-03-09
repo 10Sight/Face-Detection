@@ -2,6 +2,7 @@ import { fetchAllIdentities, updateIdentityRecord, purgeIdentityRecord } from ".
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 
+
 /**
  * GET /api/v1/identity/all
  */

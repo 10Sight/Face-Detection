@@ -1,19 +1,22 @@
 import cv2
 import numpy as np
-import os
-import requests
 import hashlib
 import random
+import os
+import requests
+from app.core.config import settings
+from app.core.logging import logger as log
 
 class DemographicsEngine:
-    def __init__(self, model_dir='models'):
-        self.model_dir = model_dir
+    def __init__(self, model_dir=None):
+        self.model_dir = model_dir or settings.FACE_MODELS
         os.makedirs(self.model_dir, exist_ok=True)
 
-        self.age_proto = os.path.join(model_dir, "deploy_age.prototxt")
-        self.age_model = os.path.join(model_dir, "age_net.caffemodel")
-        self.gender_proto = os.path.join(model_dir, "deploy_gender.prototxt")
-        self.gender_model = os.path.join(model_dir, "gender_net.caffemodel")
+
+        self.age_proto = str(settings.AGE_PROTO)
+        self.age_model = str(settings.AGE_MODEL)
+        self.gender_proto = str(settings.GENDER_PROTO)
+        self.gender_model = str(settings.GENDER_MODEL)
 
         self._ensure_models()
 
@@ -37,7 +40,7 @@ class DemographicsEngine:
         for name, url in MODEL_URLS.items():
             path = os.path.join(self.model_dir, name)
             if not os.path.exists(path):
-                print(f"Downloading {name}...")
+                log.info(f"Downloading {name}...")
                 r = requests.get(url, stream=True)
                 with open(path, "wb") as f:
                     for chunk in r.iter_content(8192):
@@ -70,11 +73,6 @@ class DemographicsEngine:
             gender_preds = self.gender_net.forward()[0]
             gender_idx = gender_preds.argmax()
             gender_conf = float(gender_preds.max())
-
-            # Stability Logic: If borderline, use hash for deterministic stability
-            if gender_conf < 0.8:
-                gender_idx = rng.randint(0, 1)
-                gender_conf = 0.85 # UI stability boost
             
             gender = self.GENDER_LIST[gender_idx]
 
@@ -83,11 +81,6 @@ class DemographicsEngine:
             age_preds = self.age_net.forward()[0]
             age_idx = age_preds.argmax()
             age_conf = float(age_preds.max())
-
-            # Stability Logic: If borderline, use hash for deterministic stability
-            if age_conf < 0.6:
-                age_idx = rng.randint(3, 5) # Default to adult ranges
-                age_conf = 0.7
                 
             age = self.AGE_LIST[age_idx]
 
@@ -101,5 +94,5 @@ class DemographicsEngine:
             }
 
         except Exception as e:
-            print("Demographics error:", e)
+            log.error(f"Demographics error: {e}")
             return {"age": "Unknown", "gender": "Unknown", "confidence": {"age": 0, "gender": 0}}

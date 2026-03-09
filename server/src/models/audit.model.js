@@ -29,6 +29,24 @@ const auditLogSchema = new Schema(
             gender: String,
             livenessScore: Number,
         },
+        entityType: {
+            type: String,
+            enum: ["face", "object"],
+            default: "face",
+            index: true
+        },
+        cameraId: {
+            type: String,
+            required: false,
+            default: "unknown",
+            index: true
+        },
+        reidIdentityId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'ReIDIdentity',
+            required: false,
+            index: true
+        },
         imageSnapshot: {
             type: String, // URL or Base64 of the specific sighting
             required: false,
@@ -37,6 +55,25 @@ const auditLogSchema = new Schema(
             type: [Number], // Forensic fingerprint for historical search
             required: false,
             select: false, // Don't return by default to save bandwidth
+        },
+        eventType: {
+            type: String,
+            enum: ["running", "fall", "stationary", "normal", "restricted_entry", "loitering"],
+            default: "normal",
+            index: true
+        },
+        behaviorConfidence: {
+            type: Number,
+            default: 0
+        },
+        zoneId: {
+            type: Schema.Types.ObjectId,
+            ref: "Zone",
+            required: false
+        },
+        zoneName: {
+            type: String,
+            required: false
         }
     },
     {
@@ -44,8 +81,16 @@ const auditLogSchema = new Schema(
     }
 );
 
+// Performance: Compound index for Suspicious Activity Detection
+auditLogSchema.index({ entityType: 1, name: 1, createdAt: -1 });
+
+// Performance: Specialized indexes for Cross-Camera Tracking & Timelines
+auditLogSchema.index({ faceId: 1, createdAt: -1 });
+auditLogSchema.index({ faceId: 1, cameraId: 1, createdAt: -1 });
+
 // Performance: Index timestamps for fast range queries (Attendance Reports)
 auditLogSchema.index({ createdAt: -1 });
+
 
 // Scalability: Auto-expire logs older than 90 days to prevent DB bloat
 // auditLogSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 90 });

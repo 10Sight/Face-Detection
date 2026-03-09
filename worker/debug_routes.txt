@@ -1,0 +1,8 @@
+/openapi.json - Route
+/docs - Route
+/docs/oauth2-redirect - Route
+/redoc - Route
+/ - APIRoute
+/api/v1/detect - APIRoute
+/ws/perceive - APIWebSocketRoute
+/api/v1/telemetry - APIRoute

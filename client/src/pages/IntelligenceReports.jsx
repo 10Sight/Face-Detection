@@ -47,15 +47,15 @@ const IntelligenceReports = () => {
     };
 
     return (
-        <div className="page-shell flex flex-col gap-6 lg:gap-8 overflow-hidden">
+        <div className="page-shell flex flex-col gap-6 lg:gap-8 overflow-hidden h-full">
             {/* Header */}
-            <div className="flex flex-col xl:flex-row xl:justify-between xl:items-end gap-4">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-4 shrink-0">
                 <div>
-                    <h1 className="text-3xl md:text-4xl font-black text-white tracking-tighter uppercase mb-2">
-                        Intelligence <span className="text-blue-500">Reports</span>
+                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight uppercase mb-2">
+                        Intelligence <span className="text-indigo-600">Reports</span>
                     </h1>
-                    <div className="text-zinc-500 font-medium tracking-widest uppercase text-xs flex items-center gap-2">
-                        <FileText className="w-3 h-3 text-blue-500" />
+                    <div className="text-slate-500 font-semibold tracking-wide uppercase text-xs flex items-center gap-2">
+                        <FileText className="w-3.5 h-3.5 text-indigo-500" />
                         Enterprise Biometric Data Extraction & Auditing
                     </div>
                 </div>
@@ -63,69 +63,73 @@ const IntelligenceReports = () => {
                 <div className="flex flex-wrap gap-3 sm:gap-4">
                     <Button
                         onClick={() => handleExport('csv')}
-                        variant="secondary"
-                        className="rounded-xl h-12 px-6 font-black uppercase tracking-widest text-[10px] bg-white/[0.03] border-white/10 hover:bg-white/[0.08]"
+                        variant="outline"
+                        className="rounded-xl h-12 px-6 font-bold uppercase tracking-widest text-[10px] bg-white border-slate-200 hover:bg-slate-50 text-slate-600 shadow-sm"
                     >
-                        <FileSpreadsheet className="w-4 h-4 mr-2 text-green-500" />
+                        <FileSpreadsheet className="w-4.5 h-4.5 mr-2 text-emerald-500" />
                         Export CSV
                     </Button>
                     <Button
                         onClick={() => handleExport('pdf')}
-                        className="rounded-xl h-12 px-6 font-black uppercase tracking-widest text-[10px] bg-blue-600 hover:bg-blue-700 shadow-xl shadow-blue-900/20"
+                        className="rounded-xl h-12 px-6 font-bold uppercase tracking-widest text-[10px] bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/20"
                     >
-                        <Download className="w-4 h-4 mr-2" />
+                        <Download className="w-4.5 h-4.5 mr-2" />
                         Generate PDF
                     </Button>
                 </div>
             </div>
 
-            <div className="flex-1 grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8 min-h-0">
+            <div className="flex-1 grid grid-cols-1 xl:grid-cols-12 gap-6 lg:gap-8 min-h-0 overflow-hidden">
                 {/* Configuration Panel */}
-                <Card className="xl:col-span-3 bg-white/[0.02] border-white/10 rounded-[2.5rem] p-6 lg:p-8 flex flex-col gap-6 lg:gap-8 shadow-2xl backdrop-blur-3xl">
-                    <div className="flex flex-col gap-6">
+                <Card className="xl:col-span-3 bg-white border-slate-200/60 rounded-2xl p-6 lg:p-7 flex flex-col gap-7 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50/50 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+
+                    <div className="flex flex-col gap-8 relative z-10">
                         <div>
-                            <div className="text-lg font-bold text-white uppercase tracking-tight">Parameters</div>
-                            <div className="text-[10px] text-zinc-500 font-black uppercase tracking-widest mt-1">Configure audit window</div>
+                            <div className="text-lg font-bold text-slate-900 tracking-tight">Parameters</div>
+                            <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Configure audit window</div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-5">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-1">Range Start</label>
-                                <div className="bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 flex items-center gap-3">
-                                    <Calendar className="w-4 h-4 text-zinc-500" />
+                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Range Start</label>
+                                <div className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-inner">
+                                    <Calendar className="w-4.5 h-4.5 text-slate-300" />
                                     <input
                                         type="date"
                                         value={dateRange.start}
                                         onChange={(e) => handleDateChange('start', e.target.value)}
-                                        className="bg-transparent border-none outline-none text-white text-xs w-full uppercase"
+                                        className="bg-transparent border-none outline-none text-slate-900 font-bold text-xs w-full uppercase"
                                     />
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-zinc-600 uppercase tracking-widest ml-1">Range End</label>
-                                <div className="bg-white/[0.03] border border-white/10 rounded-2xl px-4 py-3 flex items-center gap-3">
-                                    <Calendar className="w-4 h-4 text-zinc-500" />
+                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Range End</label>
+                                <div className="bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-inner">
+                                    <Calendar className="w-4.5 h-4.5 text-slate-300" />
                                     <input
                                         type="date"
                                         value={dateRange.end}
                                         onChange={(e) => handleDateChange('end', e.target.value)}
-                                        className="bg-transparent border-none outline-none text-white text-xs w-full uppercase"
+                                        className="bg-transparent border-none outline-none text-slate-900 font-bold text-xs w-full uppercase"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <div className="pt-4 border-t border-white/10">
-                            <div className="text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-4">Quick Stats</div>
+                        <div className="pt-6 border-t border-slate-100">
+                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-5">Quick Stats</div>
                             <div className="space-y-3">
                                 {[
-                                    { label: "Total Logs", value: pagination.total, color: "text-blue-500" },
-                                    { label: "High Confidence", value: reportData.logs.filter(l => l.confidence > 0.9).length, color: "text-green-500" },
-                                    { label: "Unknown Entities", value: reportData.summary.find(s => s._id === "Guest")?.count || 0, color: "text-amber-500" }
+                                    { label: "Total Logs", value: pagination.total, color: "text-indigo-600", bg: "bg-indigo-50" },
+                                    { label: "High Confidence", value: reportData.logs.filter(l => l.confidence > 0.9).length, color: "text-emerald-600", bg: "bg-emerald-50" },
+                                    { label: "Unknown Entities", value: reportData.summary.find(s => s._id === "Guest")?.count || 0, color: "text-amber-600", bg: "bg-amber-50" }
                                 ].map((s, i) => (
-                                    <div key={i} className="flex justify-between items-center bg-white/[0.01] p-3 rounded-xl border border-white/[0.03]">
-                                        <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">{s.label}</span>
-                                        <span className={`text-xs font-black ${s.color}`}>{s.value}</span>
+                                    <div key={i} className="flex justify-between items-center p-3.5 rounded-2xl border border-slate-50">
+                                        <div className="flex flex-col">
+                                            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{s.label}</span>
+                                        </div>
+                                        <span className={`text-xs font-bold ${s.color} ${s.bg} px-2.5 py-1 rounded-lg`}>{s.value}</span>
                                     </div>
                                 ))}
                             </div>
@@ -134,88 +138,92 @@ const IntelligenceReports = () => {
                 </Card>
 
                 {/* Report Preview Panel */}
-                <Card className="xl:col-span-9 bg-white/[0.01] border-white/10 rounded-[2.5rem] flex flex-col overflow-hidden shadow-2xl">
-                    <div className="px-6 lg:px-10 py-6 lg:py-8 border-b border-white/10 bg-white/[0.02] flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-center">
+                <Card className="xl:col-span-9 bg-white border-slate-200/60 rounded-2xl flex flex-col overflow-hidden shadow-xl">
+                    <div className="px-6 lg:px-8 py-5 lg:py-6 border-b border-slate-100 bg-slate-50/30 flex flex-col sm:flex-row gap-4 sm:justify-between sm:items-center">
                         <div className="flex items-center gap-4">
-                            <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                                <TableIcon className="w-5 h-5 text-blue-500" />
+                            <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center shadow-sm">
+                                <TableIcon className="w-5 h-5 text-indigo-600" />
                             </div>
                             <div>
-                                <div className="text-lg font-bold text-white uppercase">Intelligence Preview</div>
-                                <div className="text-[10px] text-zinc-500 font-black uppercase tracking-widest">
+                                <div className="text-lg font-bold text-slate-900 tracking-tight uppercase leading-none mb-1">Intelligence Preview</div>
+                                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
                                     {isLoading ? "Synchronizing logs..." : `Showing ${reportData.logs.length} of ${pagination.total} signatures`}
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4 bg-black/20 p-1.5 rounded-2xl border border-white/5">
+                        <div className="flex items-center gap-3 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => setPage(p => Math.max(1, p - 1))}
                                 disabled={page === 1 || isLoading}
-                                className="w-8 h-8 rounded-xl text-zinc-500 hover:text-white"
+                                className="w-9 h-9 rounded-xl text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
                             >
-                                <ChevronLeft className="w-4 h-4" />
+                                <ChevronLeft className="w-5 h-5" />
                             </Button>
-                            <span className="text-[10px] font-black text-white px-2">
-                                {page} / {pagination.totalPages || 1}
+                            <span className="text-[10px] font-bold text-slate-900 px-3 min-w-[60px] text-center tracking-widest border-x border-slate-100 uppercase">
+                                {page} <span className="text-slate-300 mx-1">/</span> {pagination.totalPages || 1}
                             </span>
                             <Button
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
                                 disabled={page === pagination.totalPages || isLoading}
-                                className="w-8 h-8 rounded-xl text-zinc-500 hover:text-white"
+                                className="w-9 h-9 rounded-xl text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all"
                             >
-                                <ChevronRight className="w-4 h-4" />
+                                <ChevronRight className="w-5 h-5" />
                             </Button>
                         </div>
                     </div>
 
                     <ScrollArea className="flex-1">
                         <Table>
-                            <TableHeader className="bg-white/[0.02]">
-                                <TableRow className="border-white/10 hover:bg-transparent">
-                                    <TableHead className="px-10 py-5 text-[10px] font-black text-zinc-500 uppercase tracking-widest">Entity Signature</TableHead>
-                                    <TableHead className="px-10 py-5 text-[10px] font-black text-zinc-500 uppercase tracking-widest">Confidence</TableHead>
-                                    <TableHead className="px-10 py-5 text-[10px] font-black text-zinc-500 uppercase tracking-widest">Sentiment</TableHead>
-                                    <TableHead className="px-10 py-5 text-[10px] font-black text-zinc-500 uppercase tracking-widest">Timestamp</TableHead>
-                                    <TableHead className="px-10 py-5 text-[10px] font-black text-zinc-500 uppercase tracking-widest text-right">Reference</TableHead>
+                            <TableHeader className="bg-slate-50/50">
+                                <TableRow className="border-slate-100 hover:bg-transparent">
+                                    <TableHead className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Entity Signature</TableHead>
+                                    <TableHead className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Confidence Level</TableHead>
+                                    <TableHead className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Differentiated Sentiment</TableHead>
+                                    <TableHead className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Deployment Temporal</TableHead>
+                                    <TableHead className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest text-right">Ops</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {isLoading || isFetching ? (
-                                    <TableRow><TableCell colSpan={5} className="text-center py-20 text-zinc-500 tracking-[0.3em] font-black uppercase text-xs animate-pulse italic">Compiling Intelligence Matrix...</TableCell></TableRow>
+                                    <TableRow><TableCell colSpan={5} className="text-center py-32 text-slate-300 tracking-[0.3em] font-bold uppercase text-xs animate-pulse">Compiling Intelligence Matrix...</TableCell></TableRow>
                                 ) : reportData.logs.length === 0 ? (
-                                    <TableRow><TableCell colSpan={5} className="text-center py-20 text-zinc-500 font-bold uppercase text-xs">No records found for this period</TableCell></TableRow>
+                                    <TableRow><TableCell colSpan={5} className="text-center py-32 text-slate-400 font-bold uppercase text-xs tracking-widest">No biometric records in range</TableCell></TableRow>
                                 ) : reportData.logs.map((log) => (
-                                    <TableRow key={log._id} className="border-white/[0.05] hover:bg-white/[0.02] transition-colors group">
+                                    <TableRow key={log._id} className="border-slate-100 hover:bg-slate-50/50 transition-all group">
                                         <TableCell className="px-10 py-6">
                                             <div className="flex items-center gap-4">
-                                                <div className={`w-1.5 h-1.5 rounded-full ${log.name === 'Guest' ? 'bg-amber-500' : 'bg-blue-500'}`} />
-                                                <div className="text-sm font-black text-white uppercase tracking-tight">{log.name}</div>
+                                                <div className={`w-2 h-2 rounded-full ${log.name === 'Guest' ? 'bg-amber-400 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-indigo-500 shadow-[0_0_8px_rgba(79,70,229,0.5)]'}`} />
+                                                <div className="text-sm font-bold text-slate-900 tracking-tight uppercase group-hover:text-indigo-600 transition-colors">{log.name}</div>
                                             </div>
                                         </TableCell>
                                         <TableCell className="px-10 py-6">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-12 h-1 bg-white/5 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-blue-500" style={{ width: `${log.confidence * 100}%` }} />
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden border border-slate-50">
+                                                    <motion.div
+                                                        initial={{ width: 0 }}
+                                                        animate={{ width: `${log.confidence * 100}%` }}
+                                                        className="h-full bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(79,70,229,0.2)]"
+                                                    />
                                                 </div>
-                                                <span className="text-[10px] font-black text-zinc-400">{(log.confidence * 100).toFixed(0)}%</span>
+                                                <span className="text-[10px] font-bold text-slate-500 tabular-nums">{(log.confidence * 100).toFixed(0)}%</span>
                                             </div>
                                         </TableCell>
                                         <TableCell className="px-10 py-6">
-                                            <Badge variant="outline" className="border-white/10 text-[9px] font-black uppercase tracking-widest text-zinc-500">
+                                            <Badge variant="outline" className={`border-slate-100 text-[9px] font-bold uppercase tracking-widest rounded-lg px-2.5 py-1 ${log.dominantEmotion === 'Happy' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-slate-50 text-slate-400 border-slate-200'}`}>
                                                 {log.dominantEmotion}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="px-10 py-6 text-[10px] font-bold text-zinc-600 uppercase tabular-nums">
+                                        <TableCell className="px-10 py-6 text-[10px] font-bold text-slate-500 uppercase tracking-tighter tabular-nums">
                                             {new Date(log.createdAt).toLocaleString()}
                                         </TableCell>
                                         <TableCell className="px-10 py-6 text-right">
-                                            <Button variant="ghost" size="icon" className="w-8 h-8 rounded-lg text-zinc-600 hover:text-white hover:bg-blue-600/20">
-                                                <ChevronRight className="w-4 h-4" />
+                                            <Button variant="ghost" size="icon" className="w-9 h-9 rounded-xl text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
+                                                <ChevronRight className="w-5 h-5" />
                                             </Button>
                                         </TableCell>
                                     </TableRow>

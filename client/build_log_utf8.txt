@@ -1,0 +1,124 @@
+﻿
+> client@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 75 modules transformed.
+node.exe : 
+[31mΓ£ù[39m Build 
+failed in 1.32s
+At C:\Users\Jatin 
+Kumar Nagar\AppData\Roa
+ming\npm\npm.ps1:24 
+char:5
++     & "node$exe"  "$b
+asedir/node_modules/npm
+/bin/npm-cli.js" $args
++     ~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: ([31mΓ£ù[39m   
+  Build failed in 1    
+.32s:String) [], R    
+emoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+[31merror during 
+build:
+[31m[vite]: Rollup 
+failed to resolve 
+import 
+"react-hot-toast" from 
+"D:/10Sight 
+Technologies/10Sight 
+Technologies/Face Detec
+tion/client/src/compone
+nts/FaceDetection/ZoneE
+ditor.jsx".
+This is most likely 
+unintended because it 
+can break your 
+application at runtime.
+If you do want to 
+externalize this 
+module explicitly add 
+it to
+`build.rollupOptions.ex
+ternal`[31m
+    at viteLog (file://
+/D:/10Sight%20Technolog
+ies/10Sight%20Technolog
+ies/Face%20Detection/cl
+ient/node_modules/vite/
+dist/node/chunks/config
+.js:33635:57)
+    at file:///D:/10Sig
+ht%20Technologies/10Sig
+ht%20Technologies/Face%
+20Detection/client/node
+_modules/vite/dist/node
+/chunks/config.js:33669
+:73
+    at onwarn (file:///
+D:/10Sight%20Technologi
+es/10Sight%20Technologi
+es/Face%20Detection/cli
+ent/node_modules/@vitej
+s/plugin-react/dist/ind
+ex.js:76:7)
+    at file:///D:/10Sig
+ht%20Technologies/10Sig
+ht%20Technologies/Face%
+20Detection/client/node
+_modules/vite/dist/node
+/chunks/config.js:33669
+:28
+    at onRollupLog (fil
+e:///D:/10Sight%20Techn
+ologies/10Sight%20Techn
+ologies/Face%20Detectio
+n/client/node_modules/v
+ite/dist/node/chunks/co
+nfig.js:33664:63)
+    at onLog (file:///D
+:/10Sight%20Technologie
+s/10Sight%20Technologie
+s/Face%20Detection/clie
+nt/node_modules/vite/di
+st/node/chunks/config.j
+s:33467:4)
+    at file:///D:/10Sig
+ht%20Technologies/10Sig
+ht%20Technologies/Face%
+20Detection/client/node
+_modules/rollup/dist/es
+/shared/node-entry.js:2
+0981:32
+    at Object.logger 
+[as onLog] (file:///D:/
+10Sight%20Technologies/
+10Sight%20Technologies/
+Face%20Detection/client
+/node_modules/rollup/di
+st/es/shared/node-entry
+.js:22968:9)
+    at ModuleLoader.han
+dleInvalidResolvedId (f
+ile:///D:/10Sight%20Tec
+hnologies/10Sight%20Tec
+hnologies/Face%20Detect
+ion/client/node_modules
+/rollup/dist/es/shared/
+node-entry.js:21712:26)
+    at file:///D:/10Sig
+ht%20Technologies/10Sig
+ht%20Technologies/Face%
+20Detection/client/node
+_modules/rollup/dist/es
+/shared/node-entry.js:2
+1670:26[39m

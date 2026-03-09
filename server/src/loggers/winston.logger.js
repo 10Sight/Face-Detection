@@ -30,34 +30,23 @@ winston.addColors(colors);
 const logFormat = winston.format.combine(
     winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
     winston.format.errors({ stack: true }),
-    winston.format.printf(({ level, message, timestamp, stack }) => {
-        if (stack) {
-            return `${timestamp} [${level}] ${message}\n${stack}`;
+    winston.format.printf((info) => {
+        const { level, message, timestamp, stack, ...meta } = info;
+        let logMsg = stack ? `${timestamp} [${level}] ${message}\n${stack}` : `${timestamp} [${level}] ${message}`;
+        if (Object.keys(meta).length) {
+            logMsg += `\n${JSON.stringify(meta, null, 2)}`;
         }
-        return `${timestamp} [${level}] ${message}`;
+        return logMsg;
     })
 );
 
-const transports = [];
-
-if (nodeEnv === "development") {
-    transports.push(
-        new winston.transports.Console({
-            format: winston.format.combine(winston.format.colorize(), logFormat),
-        })
-    );
-} else {
-    transports.push(
-        new winston.transports.File({ filename: "logs/error.log", level: "error" }),
-        new winston.transports.File({ filename: "logs/warn.log", level: "warn" }),
-        new winston.transports.File({ filename: "logs/info.log", level: "info" }),
-        new winston.transports.File({ filename: "logs/http.log", level: "http" }),
-        new winston.transports.File({ filename: "logs/verbose.log", level: "verbose" }),
-        new winston.transports.File({ filename: "logs/debug.log", level: "debug" }),
-        new winston.transports.File({ filename: "logs/silly.log", level: "silly" }),
-        new winston.transports.File({ filename: "logs/combined.log" })
-    );
-}
+const transports = [
+    new winston.transports.Console({
+        format: winston.format.combine(winston.format.colorize(), logFormat),
+    }),
+    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
+    new winston.transports.File({ filename: "logs/combined.log" })
+];
 
 const logger = winston.createLogger({
     level: nodeEnv === "development" ? "debug" : "warn",

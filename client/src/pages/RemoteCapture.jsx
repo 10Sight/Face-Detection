@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Peer from 'peerjs';
-import { Camera, Video, AlertCircle, Loader2, Wifi, WifiOff } from 'lucide-react';
+import { Camera, Video, AlertCircle, Loader2, Wifi, WifiOff, Globe } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
 const RemoteCapture = () => {
@@ -73,77 +73,128 @@ const RemoteCapture = () => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black text-white flex flex-col items-center justify-center p-6 font-sans">
-            <div className="w-full max-w-sm space-y-8 text-center">
-                <div className="space-y-2">
-                    <div className="flex justify-center mb-4">
-                        <div className={`p-4 rounded-3xl ${status === 'streaming' ? 'bg-blue-600 animate-pulse' : 'bg-zinc-800'} border border-white/10`}>
-                            {status === 'streaming' ? <Video className="w-10 h-10" /> : <Camera className="w-10 h-10 text-zinc-500" />}
+        <div className="fixed inset-0 bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-6 font-sans overflow-hidden">
+            {/* Background Decoration */}
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#4f46e5 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+            <div className="absolute -top-40 -left-40 w-80 h-80 bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+            <div className="w-full max-w-sm space-y-10 text-center relative z-10">
+                {/* Header */}
+                <div className="space-y-4">
+                    <div className="flex justify-center">
+                        <div className={`p-5 rounded-2xl transition-all duration-700 ${status === 'streaming' ? 'bg-indigo-600 shadow-2xl shadow-indigo-200 scale-110' : 'bg-white shadow-xl shadow-slate-200'} border border-slate-100`}>
+                            {status === 'streaming' ?
+                                <Video className="w-10 h-10 text-white animate-pulse" /> :
+                                <Camera className="w-10 h-10 text-slate-300" />
+                            }
                         </div>
                     </div>
-                    <h1 className="text-3xl font-black tracking-tighter uppercase">Remote <span className="text-blue-500">Uplink</span></h1>
-                    <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Neural Surveillance Node v1.0</p>
+                    <div>
+                        <h1 className="text-3xl font-bold tracking-tight uppercase">Remote <span className="text-indigo-600">Uplink</span></h1>
+                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-2">Neural Surveillance Node v2.0</p>
+                    </div>
                 </div>
 
-                <div className="relative aspect-video bg-zinc-900 rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
-                    <video ref={videoRef} autoPlay playsInline muted className="w-full h-full object-cover grayscale opacity-50" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+                {/* Video Preview / State Area */}
+                <div className="relative aspect-video bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-2xl shadow-slate-200 group">
+                    <video
+                        ref={videoRef}
+                        autoPlay
+                        playsInline
+                        muted
+                        className={`w-full h-full object-cover transition-opacity duration-1000 ${status === 'streaming' ? 'opacity-100 grayscale-0' : 'opacity-20 grayscale'}`}
+                    />
+
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-8 backdrop-blur-[2px] bg-white/10">
                         {status === 'idle' && (
-                            <div className="text-center space-y-4">
-                                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block">Ready for handoff</span>
+                            <div className="text-center space-y-6">
+                                <div className="space-y-1">
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Signal Verified</span>
+                                    <span className="text-xs font-bold text-slate-600 block">Ready for handoff</span>
+                                </div>
                                 <Button
                                     onClick={startStreaming}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white font-black uppercase tracking-widest text-xs h-12 px-8 rounded-2xl"
+                                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold uppercase tracking-widest text-[10px] h-11 px-10 rounded-xl shadow-lg shadow-indigo-500/20 transition-all active:scale-95"
                                 >
                                     Initiate Stream
                                 </Button>
                             </div>
                         )}
+
                         {status === 'connecting' && (
-                            <div className="flex flex-col items-center gap-3">
-                                <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
-                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Establishing Neural Tunnel...</span>
+                            <div className="flex flex-col items-center gap-4">
+                                <div className="relative">
+                                    <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
+                                    <Globe className="w-4 h-4 text-indigo-300 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                                </div>
+                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Establishing Neural Tunnel...</span>
                             </div>
                         )}
+
                         {status === 'streaming' && (
-                            <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-blue-500/50">
-                                <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping" />
-                                <span className="text-[9px] font-black uppercase tracking-widest">Live Uplink</span>
+                            <div className="absolute top-6 right-6 flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-indigo-100">
+                                <span className="w-2.5 h-2.5 bg-indigo-600 rounded-full animate-ping" />
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-900">Live Uplink</span>
                             </div>
                         )}
                     </div>
 
-                    {/* Visual Grids */}
-                    <div className="absolute inset-0 pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+                    {/* Scanning Line Animation (only when streaming) */}
+                    {status === 'streaming' && (
+                        <div className="absolute inset-x-0 h-1 bg-indigo-500/30 blur-sm top-0 animate-[scan_2s_ease-in-out_infinite]" />
+                    )}
                 </div>
 
                 {error && (
-                    <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-left">
-                        <AlertCircle className="w-5 h-5 text-red-500 shrink-0" />
-                        <span className="text-[10px] font-bold text-red-400 uppercase tracking-tight leading-tight">{error}</span>
-                    </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-4 bg-rose-50 border border-rose-100 rounded-2xl flex items-center gap-4 text-left shadow-sm"
+                    >
+                        <div className="p-2 bg-rose-100 rounded-lg">
+                            <AlertCircle className="w-5 h-5 text-rose-600 shrink-0" />
+                        </div>
+                        <span className="text-[10px] font-bold text-rose-600 uppercase tracking-tight leading-relaxed">{error}</span>
+                    </motion.div>
                 )}
 
-                <div className="pt-4 space-y-4">
-                    <div className="flex items-center justify-between px-6 py-4 bg-white/[0.03] border border-white/5 rounded-2xl">
-                        <div className="text-left">
-                            <p className="text-[9px] font-black text-zinc-500 uppercase tracking-widest">Session Status</p>
-                            <p className="text-xs font-bold text-white capitalize">{status}</p>
+                {/* Session Info */}
+                <div className="pt-2 space-y-4">
+                    <div className="flex items-center justify-between px-6 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm">
+                        <div className="text-left space-y-1">
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Node Path</p>
+                            <p className="text-sm font-bold text-slate-900 capitalize flex items-center gap-2">
+                                {status === 'streaming' ? 'Active Tunnel' : 'Standby Node'}
+                                <span className={`w-1.5 h-1.5 rounded-full ${status === 'streaming' ? 'bg-indigo-500' : 'bg-slate-200'}`} />
+                            </p>
                         </div>
-                        {status === 'streaming' ? <Wifi className="w-5 h-5 text-blue-500" /> : <WifiOff className="w-5 h-5 text-zinc-700" />}
+                        <div className={`p-2.5 rounded-xl ${status === 'streaming' ? 'bg-indigo-50 text-indigo-600' : 'bg-slate-50 text-slate-300'}`}>
+                            {status === 'streaming' ? <Wifi className="w-5 h-5" /> : <WifiOff className="w-5 h-5" />}
+                        </div>
                     </div>
 
                     {status === 'streaming' && (
                         <Button
                             onClick={stopStreaming}
                             variant="ghost"
-                            className="text-red-500 font-bold uppercase tracking-widest text-[10px] hover:bg-red-500/10"
+                            className="text-rose-500 font-bold uppercase tracking-widest text-[10px] hover:bg-rose-50 hover:text-rose-600 w-full h-11 rounded-xl transition-all"
                         >
-                            Deactivate Link
+                            Deactivate Mission Link
                         </Button>
                     )}
                 </div>
             </div>
+
+            {/* In-page Styles */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @keyframes scan {
+                    0% { top: 0%; }
+                    50% { top: 100%; }
+                    100% { top: 0%; }
+                }
+            `}} />
         </div>
     );
 };
